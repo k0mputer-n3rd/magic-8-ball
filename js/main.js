@@ -6,17 +6,17 @@
 
 /* main.js */
 
+// Bug List:
+// Doesn't handle scroll bar on desktop screen.
+// Add vertical spacing to form.
+// Add line breaks to footer on narrow screens.
+// Spinner needs to be finished. Maybe one full spin, then stop?
+// Handle return after question is entered, defaultbutton?
+// Do I need to force display refresh for it to look right?
+
 /******\
 * main *
 \******/
-
-// First-time Initialization
-
-var dispWidth = window.innerWidth;
-var dispHeight = window.innerHeight;
-
-// Add Event Listener for Window Resize
-window.addEventListener("resize", dispOnResize);
 
 // Constants for Image Files
 const imgStart = "./img/magic8ball_start.png";
@@ -43,12 +43,25 @@ const imgArray = [
   "./img/magic8ball_19.png",
   "./img/magic8ball_20.png",
 ];
-var lastImg = -1;
+var prevImg = -1;
+
+// First-time Initialization
+
+var dispWidth = window.innerWidth;
+var dispHeight = window.innerHeight;
+
+// Add Event Listener for Window Resize
+window.addEventListener("resize", dispOnResize);
 
 // Define variables for HTML Objects
 var div1, div2, footer1, form1, question1, button1, image1;
 initHTML(); // Initialize HTML Body
 resizeHTML(); // Handle Initial Size
+
+// Set an event for the button
+button1.addEventListener("click", ask8Ball);
+
+var prevAsk = ""; // Previous question asked (don't ask twice)
 
 /**************\
 * dispOnResize *
@@ -103,8 +116,6 @@ function initHTML() {
   button1 = document.getElementById("button1");
   image1 = document.getElementById("image1");
 
-  // Set a few style attributes
-
   console.log("initHTML");
 }
 
@@ -115,7 +126,8 @@ function initHTML() {
 // Resize HTML Objects based on Screen Size
 
 function resizeHTML() {
-  if (dispWidth > dispHeight) { // If Landscape (Width > Height)
+  // If Landscape (Width > Height)
+  if (dispWidth > dispHeight) {
     let div1Width = Math.floor(dispWidth * 0.4);
     let div2Width = Math.floor(dispWidth * 0.6);
     let imagePad = Math.floor(dispWidth * 0.02);
@@ -135,7 +147,9 @@ function resizeHTML() {
     footer1.style.clear = "both";
     console.log(div1.style.width, div2.style.width);
     console.dir(footer1);
-  } else { // Else Portrait (Width <= Height)
+
+    // Else Portrait (Width <= Height)
+  } else {
     let div1Width = Math.floor(dispWidth);
     let div2Width = Math.floor(dispWidth);
     let imagePad = Math.floor(dispWidth * 0.02);
@@ -146,35 +160,49 @@ function resizeHTML() {
     div2.style.float = "none";
     image1.style.padding = `${imagePad}px`;
     image1.style.width = `${imageWidth}px`;
-
   }
 
   console.log("resizeHTML", dispWidth, dispHeight);
 }
 
 /**********\
-* getFacts *
+* ask8Ball *
 \**********/
 
-// Get a single fact, display fact and image
+// Activated when "Ask" button is clicked.
 
-function getFact() {
-  let factIndex = Math.trunc(Math.random() * factArray.length);
-  if (factIndex === lastFact) {
-    factIndex++;
-    if (factIndex === factArray.length) {
-      factIndex = 0;
-    }
+function ask8Ball() {
+  let questionAsk = question1.value;
+  if (questionAsk.length === 0) {
+    alert("You must type your question first");
+    return;
   }
-  lastFact = factIndex;
-  theFact.innerHTML = factArray[factIndex].text;
+  if (questionAsk === prevAsk) {
+    alert("You already asked that question");
+    return;
+  }
+  prevAsk = questionAsk; // Save Answer
   let imgIndex = Math.trunc(Math.random() * imgArray.length);
-  if (imgIndex === lastImg) {
+  if (imgIndex === prevImg) {
     imgIndex++;
     if (imgIndex === imgArray.length) {
       imgIndex = 0;
     }
   }
-  lastImg = imgIndex;
-  theImage.src = imgArray[imgIndex];
+  prevImg = imgIndex;
+  console.log(imgIndex);
+  spinAnswer(imgIndex);
+}
+
+/************\
+* spinAnswer *
+\************/
+
+// Displan Spin Image, then Answer Image
+
+function spinAnswer(index) {
+  image1.src = imgSpin;
+  setTimeout(function () {
+    image1.src = imgArray[index];
+  }, 4000);
 }
