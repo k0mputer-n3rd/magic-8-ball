@@ -12,6 +12,7 @@
 // Add line breaks to footer on narrow screens.
 // Spinner needs to be finished. Maybe one full spin, then stop?
 // Handle return after question is entered, defaultbutton?
+// Eliminate display of previous answers.
 // Do I need to force display refresh for it to look right?
 
 /******\
