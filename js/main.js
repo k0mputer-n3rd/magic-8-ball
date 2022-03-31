@@ -3,7 +3,7 @@
 /* Magic 8-Ball */
 /* Allen P */
 /* (K0mputer N3rd) */
-/* 03/27/2022 */
+/* 03/30/2022 */
 
 /* main.js */
 
@@ -26,14 +26,10 @@
 // Handle mobile-friendly scaling (portrait and landscape).
 // HTML will link the JavaScript and have an empty body.
 
-// Bug List:
-// Why does the portrait text sometimes look small?
+// ToDo List:
 // Footer styles done at initialization, not every resize.
-// Add vertical spacing to form.
 // Adjust width of question text box.
 // Consider using .createElement and adding each element to the HTML.
-// Remove console.log statements.
-// Do I need to force display refresh for it to look right?
 
 /******\
 * main *
@@ -162,52 +158,52 @@ function resizeHTML() {
 
   // If Landscape (Width > Height)
   if (dispWidth > dispHeight) {
-    div1Width = Math.floor(dispWidth * 0.4);
+    div1Width = "39%";
     div1Float = "left";
-    div2Width = Math.floor(dispWidth * 0.6) - 17; // Allow for width of scroll bar
+    div2Width = "59%";
     div2Float = "right";
-    imagePad = Math.floor(dispWidth * 0.02);
-    imageWidth = dispHeight > div2Width ? div2Width : dispHeight;
-    imageWidth -= 2 * imagePad;
+    imageWidth = dispHeight > dispWidth * 0.59 ? "55vw" : "97vh";
+    imagePad = 4;
     textMargin = Math.floor((imageWidth - 100) / 5);
     textMargin = textMargin < 2 ? 2 : textMargin;
 
     // Else Portrait (Width <= Height)
   } else {
-    div1Width = Math.floor(dispWidth);
+    // div1Width = Math.floor(dispWidth);
+    div1Width = "100%";
     div1Float = "none";
-    div2Width = Math.floor(dispWidth);
+    // div2Width = Math.floor(dispWidth);
+    div2Width = "100%";
     div2Float = "none";
-    imagePad = Math.floor(dispWidth * 0.02);
-    imageWidth = dispWidth - 2 * imagePad;
-    textMargin = Math.floor((dispHeight - imageWidth - 100) / 5);
+    // imagePad = Math.floor(dispWidth * 0.02);
+    imageWidth = dispWidth > dispHeight - 100 ? "70vh" : "95vw";
+    imagePad = 4;
+    textMargin = Math.floor((dispHeight - dispWidth - 100) / 5);
     textMargin = textMargin < 2 ? 2 : textMargin;
   }
-  
+
   // Handle Breaks for Narrow Footer
-  breakDisplay = ((dispWidth > 500) ? "none" : "inherit");
+  breakDisplay = dispWidth > 500 ? "none" : "inherit";
 
   // Set Style Values
-  div1.style.width = `${div1Width}px`;
+  div1.style.width = div1Width;
   div1.style.float = div1Float;
-  div2.style.width = `${div2Width}px`;
+  div2.style.width = div2Width;
   div2.style.float = div2Float;
   title1.style.marginTop = `${textMargin}px`;
   title1.style.marginBottom = `${textMargin}px`;
   question1.style.marginTop = `${textMargin}px`;
   button1.style.marginTop = `${textMargin}px`;
   button1.style.marginBottom = `${textMargin}px`;
+  image1.style.width = imageWidth;
   image1.style.padding = `${imagePad}px`;
-  image1.style.width = `${imageWidth}px`;
 
-  // footer1.style.width =`${dispWidth}px`;
-  footer1.style.width =`100%`;
+  footer1.style.width = "100%";
   footer1.style.float = "none";
   footer1.style.clear = "both";
   break1.style.display = breakDisplay;
   break2.style.display = breakDisplay;
   break3.style.display = breakDisplay;
-  appendInfo();
 }
 
 /**********\
@@ -251,15 +247,4 @@ function spinAnswer(index) {
   setTimeout(function () {
     image1.src = imgArray[index];
   }, 3000);
-}
-
-// debug
-
-function appendInfo() {
-  let para = document.createElement("p");
-  footer1.append(para);
-  let w = window.innerWidth;
-  let h = window.innerHeight;
-  let t = `Debug: ${w} ${h}`;
-  para.innerHTML = t;
 }
