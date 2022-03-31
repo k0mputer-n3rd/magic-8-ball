@@ -27,9 +27,11 @@
 // HTML will link the JavaScript and have an empty body.
 
 // Bug List:
+// Why does the portrait text sometimes look small?
+// Footer styles done at initialization, not every resize.
 // Add vertical spacing to form.
 // Adjust width of question text box.
-// Add line breaks to footer on narrow screens.
+// Consider using .createElement and adding each element to the HTML.
 // Remove console.log statements.
 // Do I need to force display refresh for it to look right?
 
@@ -198,12 +200,14 @@ function resizeHTML() {
   image1.style.padding = `${imagePad}px`;
   image1.style.width = `${imageWidth}px`;
 
-  footer1.style.width =`${dispWidth}px`
+  // footer1.style.width =`${dispWidth}px`;
+  footer1.style.width =`100%`;
   footer1.style.float = "none";
   footer1.style.clear = "both";
   break1.style.display = breakDisplay;
   break2.style.display = breakDisplay;
   break3.style.display = breakDisplay;
+  appendInfo();
 }
 
 /**********\
@@ -247,4 +251,15 @@ function spinAnswer(index) {
   setTimeout(function () {
     image1.src = imgArray[index];
   }, 3000);
+}
+
+// debug
+
+function appendInfo() {
+  let para = document.createElement("p");
+  footer1.append(para);
+  let w = window.innerWidth;
+  let h = window.innerHeight;
+  let t = `Debug: ${w} ${h}`;
+  para.innerHTML = t;
 }
