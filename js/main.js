@@ -3,7 +3,7 @@
 /* Magic 8-Ball */
 /* Allen P */
 /* (K0mputer N3rd) */
-/* 03/30/2022 */
+/* 04/01/2022 */
 
 /* main.js */
 
@@ -26,10 +26,10 @@
 // Handle mobile-friendly scaling (portrait and landscape).
 // HTML will link the JavaScript and have an empty body.
 
-// ToDo List:
-// Footer styles done at initialization, not every resize.
-// Adjust width of question text box.
+// Possible Enhancements:
 // Consider using .createElement and adding each element to the HTML.
+// Adjust width of question text box based on width of div1.
+// Footer styles done at initialization, not every resize.
 
 /******\
 * main *
@@ -162,22 +162,24 @@ function resizeHTML() {
     div1Float = "left";
     div2Width = "59%";
     div2Float = "right";
-    imageWidth = dispHeight > dispWidth * 0.59 ? "55vw" : "97vh";
-    imagePad = 4;
-    textMargin = Math.floor((imageWidth - 100) / 5);
+    if (dispHeight > dispWidth * 0.59) {
+      imageWidth = "55vw"
+      textMargin = Math.floor((dispWidth * 0.55 - 100) / 5);
+    } else {
+      imageWidth = "97vh";
+      textMargin = Math.floor((dispHeight * 0.97 - 100) / 5);
+    }
+    imagePad = "4px";
     textMargin = textMargin < 2 ? 2 : textMargin;
 
     // Else Portrait (Width <= Height)
   } else {
-    // div1Width = Math.floor(dispWidth);
     div1Width = "100%";
     div1Float = "none";
-    // div2Width = Math.floor(dispWidth);
     div2Width = "100%";
     div2Float = "none";
-    // imagePad = Math.floor(dispWidth * 0.02);
     imageWidth = dispWidth > dispHeight - 100 ? "70vh" : "95vw";
-    imagePad = 4;
+    imagePad = "4px";
     textMargin = Math.floor((dispHeight - dispWidth - 100) / 5);
     textMargin = textMargin < 2 ? 2 : textMargin;
   }
